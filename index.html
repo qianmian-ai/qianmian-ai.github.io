@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>千面 AI — 实时面试与笔试助手</title>
+<meta name="description" content="实时听面试官提问，结合你的简历与经历生成你自己的作答。本地语音识别，音频不出本机。">
+<style>
+  :root{
+    --bg:#0e1014;
+    --panel:#151922;
+    --panel-2:#1b2029;
+    --line:#262c38;
+    --text:#e8ecf3;
+    --muted:#98a2b3;
+    --dim:#6b7688;
+    --primary:#5b8cff;
+    --primary-dim:rgba(91,140,255,.14);
+    --ok:#3ecf8e;
+    --warn:#e8b45a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
+    line-height:1.9;-webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+
+  /* ---------- 导航 ---------- */
+  nav{position:sticky;top:0;z-index:50;background:rgba(14,16,20,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--primary);box-shadow:0 0 12px var(--primary)}
+  .nav-links{display:flex;gap:28px;font-size:14px;color:var(--muted)}
+  .nav-links a:hover{color:var(--text)}
+  @media(max-width:720px){.nav-links{display:none}}
+
+  /* ---------- 首屏 ---------- */
+  header{padding:88px 0 72px;position:relative;overflow:hidden}
+  header::before{
+    content:"";position:absolute;inset:-40% 30% auto -20%;height:520px;
+    background:radial-gradient(closest-side,rgba(91,140,255,.18),transparent);
+    pointer-events:none;
+  }
+  .tag{display:inline-block;font-size:13px;color:var(--primary);background:var(--primary-dim);
+       border:1px solid rgba(91,140,255,.3);border-radius:999px;padding:3px 12px;margin-bottom:22px}
+  h1{font-size:46px;line-height:1.3;letter-spacing:-.5px;font-weight:700}
+  h1 em{font-style:normal;color:var(--primary)}
+  .sub{color:var(--muted);font-size:17px;max-width:640px;margin-top:20px}
+  .cta-row{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:36px}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    background:var(--primary);color:#fff;font-weight:600;font-size:16px;
+    padding:14px 28px;border-radius:10px;border:none;cursor:pointer;
+    transition:.18s transform,.18s box-shadow;
+    box-shadow:0 8px 24px rgba(91,140,255,.28);
+  }
+  .btn:hover{transform:translateY(-1px);box-shadow:0 12px 30px rgba(91,140,255,.36)}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text);box-shadow:none;font-weight:400}
+  .meta-sm{font-size:13px;color:var(--dim)}
+  @media(max-width:720px){h1{font-size:32px}}
+
+  /* ---------- 浮层示意 ---------- */
+  .mock{
+    margin-top:56px;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    background:var(--panel);box-shadow:0 24px 60px rgba(0,0,0,.5);
+  }
+  .mock-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--panel-2)}
+  .mock-bar .d{width:10px;height:10px;border-radius:50%;background:#3a4150}
+  .mock-bar .title{font-size:12px;color:var(--dim);margin-left:8px}
+  .mock-body{padding:22px 24px;font-size:14px;line-height:1.95}
+  .q{color:var(--muted);font-size:13px;margin-bottom:6px}
+  .q b{color:var(--primary);font-weight:500}
+  .a{color:#d8dee9}
+  .sep{height:1px;background:var(--line);margin:20px 0}
+  .hl{color:#fff;border-bottom:1px dashed rgba(91,140,255,.5)}
+  .mock-status{border-top:1px solid var(--line);padding:8px 24px;font-size:12px;color:var(--dim);background:var(--panel-2)}
+
+  /* ---------- 区块 ---------- */
+  section{padding:76px 0}
+  .kicker{color:var(--primary);font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+  h2{font-size:30px;line-height:1.4;font-weight:700;letter-spacing:-.3px}
+  .lead{color:var(--muted);margin-top:14px;max-width:620px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:26px}
+  .card h3{font-size:17px;font-weight:600;margin-bottom:10px}
+  .card p{color:var(--muted);font-size:14.5px}
+  .num{font-size:13px;color:var(--primary);font-weight:600;margin-bottom:14px;letter-spacing:1px}
+
+  .list{margin-top:36px;display:grid;gap:14px}
+  .row{display:flex;gap:14px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);
+       border-radius:10px;padding:18px 20px}
+  .row .ico{flex:0 0 22px;color:var(--ok);font-weight:700}
+  .row b{font-weight:600}
+  .row span{color:var(--muted);font-size:14.5px}
+
+  /* ---------- 价格 ---------- */
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+  @media(max-width:860px){.price-grid{grid-template-columns:1fr}}
+  .price{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:28px;text-align:center}
+  .price.hot{border-color:rgba(91,140,255,.55);background:linear-gradient(180deg,rgba(91,140,255,.08),var(--panel))}
+  .price .name{font-size:14px;color:var(--muted)}
+  .price .amt{font-size:38px;font-weight:700;margin:10px 0 2px}
+  .price .amt small{font-size:15px;font-weight:400;color:var(--muted)}
+  .price .per{font-size:13px;color:var(--dim)}
+  .price .note{font-size:13px;color:var(--muted);margin-top:16px}
+
+  /* ---------- FAQ ---------- */
+  details{border-bottom:1px solid var(--line);padding:18px 0}
+  details summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:16px}
+  details summary::-webkit-details-marker{display:none}
+  details summary::after{content:"+";color:var(--dim);font-weight:400}
+  details[open] summary::after{content:"−"}
+  details p{color:var(--muted);font-size:14.5px;margin-top:12px}
+  code{background:#11151c;border:1px solid var(--line);border-radius:4px;padding:1px 6px;font-size:13px;color:#c9d4e6}
+
+  /* ---------- 页脚 ---------- */
+  footer{border-top:1px solid var(--line);padding:44px 0 60px;color:var(--dim);font-size:13px}
+  .disclaimer{margin-top:18px;font-size:12.5px;line-height:1.9;color:#5c6675;max-width:820px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <div class="brand"><span class="dot"></span> 千面 AI</div>
+    <div class="nav-links">
+      <a href="#features">功能</a>
+      <a href="#why">为什么</a>
+      <a href="#price">定价</a>
+      <a href="#faq">常见问题</a>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <span class="tag">Windows 10 / 11 · 本地语音识别</span>
+    <h1>面试时，<em>答案比你先到</em></h1>
+    <p class="sub">
+      实时听面试官提问，结合你的简历与经历，生成你自己能张口讲出来的作答。
+      语音在本地识别，音频不出本机；每一轮问答自动落盘，面完可直接复盘。
+    </p>
+
+    <div class="cta-row">
+      <!-- TODO: 换成你的 GitHub 仓库地址（releases/latest/download 会自动指向最新一版） -->
+      <a class="btn" href="https://github.com/qianmian-ai/qianmian-ai.github.io/releases/latest/download/QianmianAI-Setup-0.1.0.exe">
+        ↓ 下载 Windows 版
+      </a>
+      <span class="meta-sm">v0.1.0 · 321 MB · 含语音模型，装完即用</span>
+    </div>
+
+    <div class="mock">
+      <div class="mock-bar">
+        <span class="d"></span><span class="d"></span><span class="d"></span>
+        <span class="title">面试中 · 两路分离 · deepseek-flash</span>
+      </div>
+      <div class="mock-body">
+        <div class="q"><b>面试官</b> · 你了解 Redis 的持久化机制吗？</div>
+        <div class="a">
+          这块我实际用的是 <span class="hl">Celery + Redis</span> 那套，RDB 和 AOF 的区别我讲一下我的理解：
+          RDB 是定时 fork 子进程做快照，恢复快但会丢最后一次快照之后的数据；AOF 是追加写日志，
+          <span class="hl">everysec</span> 最常用，最多丢一秒。生产上一般两个都开，用 AOF 兜数据、RDB 做冷备快速恢复。
+        </div>
+        <div class="sep"></div>
+        <div class="q"><b>面试官</b> · 那 AOF 重写是怎么做的？</div>
+        <div class="a">AOF 重写不会去读旧文件，而是直接 fork 一个子进程，把当前内存里的数据转成最小命令集写一份新的……</div>
+      </div>
+      <div class="mock-status">已答 2 问 · 首字 0.68s · 缓存命中 97%</div>
+    </div>
+  </div>
+</header>
+
+<section id="features">
+  <div class="wrap">
+    <div class="kicker">功能</div>
+    <h2>三条链路，覆盖面试与笔试</h2>
+    <p class="lead">不替代你思考，只把"组织语言"这一步的成本降到最低。</p>
+    <div class="grid">
+      <div class="card">
+        <div class="num">01</div>
+        <h3>实时面试</h3>
+        <p>采集系统播放的声音，实时识别面试官提问。等你话音落下再作答，不会话说一半就跳答案。答案按轮追加，前面答过的不会被刷掉。</p>
+      </div>
+      <div class="card">
+        <div class="num">02</div>
+        <h3>笔试截图</h3>
+        <p>全局热键 <code>Ctrl+Shift+X</code> 截屏，多模态模型直接读题。选择题也给判断依据，不只是丢一个字母。</p>
+      </div>
+      <div class="card">
+        <div class="num">03</div>
+        <h3>复盘记录</h3>
+        <p>每轮问答自动落盘。网页端按日期回看、关键词搜索，设备调试和语气词自动折叠，只看有效问答。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="wrap">
+    <div class="kicker">为什么不一样</div>
+    <h2>三件别人不一定做的事</h2>
+    <div class="list">
+      <div class="row">
+        <span class="ico">✓</span>
+        <div><b>音频不出本机。</b><span> 语音识别跑在你自己的电脑上，只有文字会发给你配置的模型服务商。不录音、不上传音频。</span></div>
+      </div>
+      <div class="row">
+        <span class="ico">✓</span>
+        <div><b>听得懂中式英语。</b><span> 内置术语纠错层，GMP、sync.Map、InnoDB 这类被识别成"简品""信客连"的词会被还原，而不是照着错词答偏。</span></div>
+      </div>
+      <div class="row">
+        <span class="ico">✓</span>
+        <div><b>只讲你简历里写过的事。</b><span> 答案锚定在你自己的经历要点上，不会给你编一个"我在阿里做过"的项目——那种一追问就露馅。</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="price">
+  <div class="wrap">
+    <div class="kicker">定价</div>
+    <h2>按分钟计，用多少买多少</h2>
+    <p class="lead">面试辅助与笔试助手共用一份时长池。调试设备不计费，点了"开始面试"才开始计时。</p>
+    <div class="price-grid">
+      <div class="price">
+        <div class="name">尝鲜包</div>
+        <div class="amt">¥29</div>
+        <div class="per">60 分钟</div>
+        <div class="note">¥0.48 / 分钟<br>适合一两次面试</div>
+      </div>
+      <div class="price hot">
+        <div class="name">标准包</div>
+        <div class="amt">¥89</div>
+        <div class="per">240 分钟</div>
+        <div class="note">¥0.37 / 分钟<br>约 8–10 场，最常买</div>
+      </div>
+      <div class="price">
+        <div class="name">通关包</div>
+        <div class="amt">¥199</div>
+        <div class="per">600 分钟</div>
+        <div class="note">¥0.33 / 分钟<br>秋招/春招整季</div>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:22px;font-size:14px">
+      时长永久有效，不自动续费。购买方式：加微信 <code>your-wechat-id</code> 获取收款码，转账时备注昵称，到账后 24 小时内发兑换码。
+    </p>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="kicker">常见问题</div>
+    <h2>装之前先看这几条</h2>
+    <div style="margin-top:32px">
+      <details open>
+        <summary>安装时提示"Windows 已保护你的电脑"怎么办？</summary>
+        <p>这是 Windows 对未签名程序的默认拦截，不是病毒。点「更多信息」→「仍要运行」即可。代码签名证书一年一千多，现阶段还没买，所以每次新版本都会出现这个提示。</p>
+      </details>
+      <details>
+        <summary>杀毒软件报毒？</summary>
+        <p>本程序会采集系统播放的声音（用于实时识别），这类行为容易被启发式引擎误判。加入信任目录即可。程序不联网上传音频，也不需要管理员权限。</p>
+      </details>
+      <details>
+        <summary>需要自己准备 API Key 吗？</summary>
+        <p>需要。模型调用走你自己的账号（DeepSeek 等），费用由你自己的账单结算。这是刻意的设计——你的面试内容不经过我们的服务器。</p>
+      </details>
+      <details>
+        <summary>装完有多大？</summary>
+        <p>安装后约 470 MB，其中 237 MB 是本地语音识别模型。模型随安装包一起装好，不需要首次运行再下载 200 多 MB。</p>
+      </details>
+      <details>
+        <summary>支持 Mac 吗？</summary>
+        <p>目前只做 Windows 10 / 11 64 位。</p>
+      </details>
+      <details>
+        <summary>能退款吗？</summary>
+        <p>购买 7 天内且未开始使用，可全额退；已使用的时长不退。</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>© 2026 千面 AI</div>
+    <p class="disclaimer">
+      本工具定位为面试练习与复盘助手，用于模拟面试、梳理自己的经历、面试后回看表达问题。
+      部分公司的招聘规则明确禁止在正式笔试/面试过程中使用 AI 辅助，在真实考核中使用本工具可能违反相关规则，
+      并可能导致成绩作废、取消资格等后果。请自行判断使用场景，并对自己的使用行为负责。
+      悬浮窗支持从录屏/屏幕共享中排除，用于保护个人窗口隐私。
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
