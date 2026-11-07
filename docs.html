@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>文档与教程 — 千面 AI</title>
+<meta name="description" content="千面 AI 的安装、实时面试、笔试截图、账户时长与故障排查文档。">
+<style>
+  :root{
+    --bg:#0e1014; --panel:#151922; --panel-2:#1b2029; --line:#262c38;
+    --text:#e8ecf3; --muted:#98a2b3; --dim:#6b7688;
+    --primary:#5b8cff; --primary-dim:rgba(91,140,255,.14);
+    --ok:#3ecf8e; --warn:#e8b45a; --danger:#f2777a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:88px}
+  body{background:var(--bg);color:var(--text);line-height:1.9;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
+    -webkit-font-smoothing:antialiased}
+  a{color:var(--primary);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+  nav{position:sticky;top:0;z-index:50;background:rgba(14,16,20,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px;color:var(--text)}
+  .brand:hover{text-decoration:none}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--primary);box-shadow:0 0 12px var(--primary)}
+  .nav-links{display:flex;gap:26px;font-size:14px;color:var(--muted)}
+  .nav-links a{color:var(--muted)}
+  .nav-links a:hover{color:var(--text);text-decoration:none}
+  @media(max-width:760px){.nav-links{display:none}}
+
+  .top{padding:52px 0 28px;border-bottom:1px solid var(--line)}
+  .tag{display:inline-block;font-size:12.5px;color:var(--primary);background:var(--primary-dim);
+       border:1px solid rgba(91,140,255,.3);border-radius:999px;padding:2px 11px;margin-bottom:16px}
+  h1{font-size:34px;line-height:1.35;font-weight:700;letter-spacing:-.3px}
+  .top p{color:var(--muted);margin-top:12px;font-size:15px}
+
+  .doc-wrap{display:grid;grid-template-columns:230px minmax(0,1fr);gap:52px;padding:40px 0 80px}
+  .toc{position:sticky;top:88px;align-self:start;font-size:14px;border-left:1px solid var(--line);padding-left:16px}
+  .toc div{color:var(--dim);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+  .toc a{display:block;color:var(--muted);padding:5px 0}
+  .toc a:hover{color:var(--text);text-decoration:none}
+  @media(max-width:900px){.doc-wrap{grid-template-columns:1fr;gap:0}.toc{position:static;border:0;padding:0 0 18px;display:flex;flex-wrap:wrap;gap:8px 18px}.toc div{width:100%}}
+
+  section{padding-top:30px}
+  section+section{border-top:1px solid var(--line);margin-top:34px}
+  h2{font-size:23px;font-weight:650;margin-bottom:16px;letter-spacing:-.2px}
+  h2 .num{color:var(--primary);font-variant-numeric:tabular-nums;margin-right:10px}
+  h3{font-size:16.5px;font-weight:650;margin:26px 0 10px;color:#dfe6f2}
+  p{color:var(--muted);margin:10px 0}
+  p b,li b{color:var(--text);font-weight:600}
+  ul,ol{margin:10px 0 10px 22px;color:var(--muted)}
+  li{margin:6px 0}
+  code{background:#11151c;border:1px solid var(--line);border-radius:4px;padding:1px 6px;font-size:13px;color:#c9d4e6;
+       font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}
+  pre{background:#11151c;border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow:auto;margin:12px 0}
+  pre code{border:0;background:none;padding:0;font-size:13px;line-height:1.7}
+  kbd{display:inline-block;background:var(--panel-2);border:1px solid var(--line);border-bottom-width:2px;
+      border-radius:6px;padding:1px 7px;font-size:12.5px;color:var(--text);
+      font-family:ui-monospace,Consolas,monospace}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--dim);font-weight:600;font-size:12.5px;letter-spacing:.04em}
+  td{color:var(--muted)}
+  td b{color:var(--text)}
+
+  .note,.warn,.ok{border-radius:10px;padding:13px 16px;margin:14px 0;font-size:14px;color:var(--muted);
+    border:1px solid var(--line);background:var(--panel)}
+  .note{border-left:3px solid var(--primary)}
+  .warn{border-left:3px solid var(--warn)}
+  .ok{border-left:3px solid var(--ok)}
+  .note b,.warn b,.ok b{color:var(--text)}
+
+  /* 截图位：卖家换成真图即可（把 .shot 换成 <img>） */
+  .shot{border:1px dashed #3a4252;border-radius:10px;padding:26px 16px;text-align:center;
+        color:var(--dim);font-size:13px;background:repeating-linear-gradient(45deg,#12161d,#12161d 10px,#141922 10px,#141922 20px)}
+
+  /* 微信群位 */
+  .wx{display:flex;gap:26px;align-items:center;flex-wrap:wrap;border:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(91,140,255,.08),transparent);border-radius:14px;padding:22px;margin:16px 0}
+  .wx-qr{width:132px;height:132px;border:1px dashed #3a4252;border-radius:12px;display:flex;
+         align-items:center;justify-content:center;text-align:center;color:var(--dim);font-size:12px;line-height:1.6}
+  .wx-main{flex:1;min-width:240px}
+  .wx-main h3{margin:0 0 6px}
+  .wx-main p{margin:6px 0}
+  .wx-id{font-size:14px;color:var(--muted);margin-top:8px}
+  .wx-id b{color:var(--text);font-family:ui-monospace,Consolas,monospace;letter-spacing:.04em}
+
+  footer{border-top:1px solid var(--line);padding:34px 0 56px;color:var(--dim);font-size:13px}
+  .foot-links{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:12px}
+  .foot-links a{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="dot"></span> 千面 AI</a>
+    <div class="nav-links">
+      <a href="index.html#features">功能</a>
+      <a href="index.html#price">定价</a>
+      <a href="docs.html">文档</a>
+      <a href="#support">支持</a>
+    </div>
+  </div>
+</nav>
+
+<div class="top">
+  <div class="wrap">
+    <span class="tag">适用于 v0.2 及以后 · Windows 10 / 11</span>
+    <h1>文档与教程</h1>
+    <p>按「装 → 用 → 遇到问题」的顺序写。第一次用，看完第 1 节就能开一场；<br>
+       卡住了直接跳第 7 节按症状查。</p>
+  </div>
+</div>
+
+<div class="wrap doc-wrap">
+  <aside class="toc">
+    <div>目录</div>
+    <a href="#gs">1 · 5 分钟上手</a>
+    <a href="#install">2 · 安装与首次设置</a>
+    <a href="#interview">3 · 实时面试</a>
+    <a href="#written">4 · 笔试截图</a>
+    <a href="#account">5 · 账户与时长</a>
+    <a href="#faq">6 · 常见问题</a>
+    <a href="#trouble">7 · 故障排查</a>
+    <a href="#privacy">8 · 隐私与使用边界</a>
+    <a href="#support">9 · 支持与反馈</a>
+  </aside>
+
+  <main>
+
+  <!-- ============================================================ 1 -->
+  <section id="gs">
+    <h2><span class="num">1</span>5 分钟上手</h2>
+    <p>四步：<b>装 → 粘简历 → 下载语音模型 → 开面试</b>。第一次会多花两三分钟，之后每次打开就能用。</p>
+
+    <h3>① 下载并安装</h3>
+    <ol>
+      <li>在首页点「下载 Windows 版」，下载完成后双击安装包。</li>
+      <li>Windows 可能弹「已保护你的电脑」（SmartScreen）：点 <b>更多信息</b> → <b>仍要运行</b>。软件没有购买数字签名证书，这一步是正常的。</li>
+      <li>安装过程不弹 UAC，默认装到你的用户目录，不需要管理员权限。</li>
+    </ol>
+    <div class="note"><b>杀毒软件报毒？</b> 软件会读取系统播放的声音（用于识别面试官提问），这类行为和录音软件相似，容易被启发式规则误报。如果被拦，把安装目录加入信任区再运行。<span class="shot" style="display:block;margin-top:10px">截图位：SmartScreen「更多信息 → 仍要运行」</span></div>
+
+    <h3>② 首次设置（4 步）</h3>
+    <p>第一次打开会进向导，四页都是能跳过的，但建议按顺序走完：</p>
+    <table>
+      <tr><th>步骤</th><th>做什么</th><th>说明</th></tr>
+      <tr><td><b>① 简历</b></td><td>把简历全文粘进来</td><td>面试时模型只按这里写过的内容作答，不会编造项目。写清楚比写长重要。</td></tr>
+      <tr><td><b>② 语音模型</b></td><td>点「下载语音模型」</td><td>约 226 MB，国内通常 1 分钟内下完；只需下一次。</td></tr>
+      <tr><td><b>③ 作答通道</b></td><td>默认「内置（免配置）」</td><td>不用注册、不用填 Key；想换更强模型再切自己的 Key。</td></tr>
+      <tr><td><b>④ 声音来源</b></td><td>自动探测，确认两行都打勾</td><td>「系统声音（面试官）」和「麦克风（我自己）」都找到就对了。</td></tr>
+    </table>
+    <div class="shot">截图位：向导第 4 步自动探测出的两行设备名</div>
+
+    <h3>③ 记住四组热键</h3>
+    <table>
+      <tr><th>热键</th><th>作用</th></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>J</kbd></td><td><b>开始 / 停止面试监听</b>（点开始才开始计时）</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd></td><td>笔试截图解题（全屏截图）</td></tr>
+      <tr><td><kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd></td><td>区域截屏解题（只截题目那一块）</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd></td><td>纠错·语音复述（识别错了，把问题重说一遍）</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd></td><td>纠错·打字（直接把正确的问题打进去）</td></tr>
+    </table>
+
+    <h3>④ 先拿一段音频试一遍</h3>
+    <p>不用真的开会也能验证：在电脑上放一段别人提问的音频（B 站面试视频即可），按 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>J</kbd>，看浮层是否出现「面试官 · 问题」和随后的答案。能出字，说明采集、识别、作答三段都通了。</p>
+  </section>
+
+  <!-- ============================================================ 2 -->
+  <section id="install">
+    <h2><span class="num">2</span>安装与首次设置</h2>
+
+    <h3>装在哪、卸载会不会丢数据</h3>
+    <p>默认装到 <code>%LOCALAPPDATA%\Programs\QianmianAI</code>，不写系统目录。卸载只删程序文件，<b>简历、经历要点、术语表、面试记录都保留</b>；想彻底清干净，卸载后手动删掉安装目录即可。</p>
+    <div class="warn"><b>余额与时长存在本机</b>（<code>billing.db</code>）。换电脑、重装系统不会自动带走，需要联系作者补发。<b>不要手动删这个文件</b>：删掉后软件会判定计费数据缺失并拒绝启动。</div>
+
+    <h3>三种作答通道怎么选</h3>
+    <table>
+      <tr><th>通道</th><th>适合谁</th><th>模型费用</th></tr>
+      <tr><td><b>内置（免配置）</b></td><td>不想折腾、直接开始用</td><td>作者承担（DeepSeek Flash）</td></tr>
+      <tr><td><b>智谱 GLM（免费）</b></td><td>想完全零成本、能接受高峰期偶发限流</td><td>免费</td></tr>
+      <tr><td><b>DeepSeek / 百炼（付费）</b></td><td>要求稳定、要更强模型</td><td>你自己充值</td></tr>
+      <tr><td><b>自定义</b></td><td>已有其他厂商 Key（OpenAI 兼容接口）</td><td>你自己充值</td></tr>
+    </table>
+    <p>切换在 <b>托盘菜单 → 设置… → 作答</b>，改完记得重启软件。</p>
+
+    <h3>语音模型下载失败怎么办</h3>
+    <p>向导第 2 步有进度条，断了可以重试。一直失败时，在安装目录打开命令行手动下：</p>
+    <pre><code>python tools/download_asr_model.py --model-dir "models/sherpa-paraformer-bilingual"</code></pre>
+    <p>没有 Python 就换个网络（手机热点）再点重试——下载源是 ModelScope，走的是国内节点。</p>
+
+    <h3>软件没有托盘图标 / 打不开</h3>
+    <ul>
+      <li>看是否已经在运行：重复双击会提示「已在运行」，从托盘图标打开即可。</li>
+      <li>打不开时看日志：安装目录下 <code>logs\crash-*.log</code> 与 <code>logs\app-*.log</code>，最后几行通常直接写明原因。</li>
+    </ul>
+  </section>
+
+  <!-- ============================================================ 3 -->
+  <section id="interview">
+    <h2><span class="num">3</span>实时面试</h2>
+
+    <h3>先选对「声音来源」</h3>
+    <p>这一步决定答案准不准，比换模型重要得多。设置 → 采集：</p>
+    <table>
+      <tr><th>你的场景</th><th>选这个</th><th>为什么</th></tr>
+      <tr><td>电脑开会议（腾讯会议 / 飞书 / Zoom），戴耳机</td><td><b>两路分离</b></td><td>系统声音=面试官、麦克风=你自己。只有面试官提问才作答，你自己说话不会触发答案。</td></tr>
+      <tr><td>只用电脑外放，不戴耳机</td><td>仅系统声音</td><td>麦克风会把外放的声音再收一遍，容易重复触发。</td></tr>
+      <tr><td>面试在手机上，电脑只用来显示答案</td><td><b>手机当麦克风（双流）</b></td><td>手机浏览器打开提示的局域网地址开始录音；手机那路当面试官、电脑麦克风当自己。</td></tr>
+    </table>
+    <div class="note"><b>为什么推荐「两路分离」：</b>它能把「面试官」和「我」分开。分开之后才有两件事——你自己说话不会触发答案；识别错了可以按 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd> 复述纠正。单流模式下这两件事都做不到。</div>
+
+    <h3>答案为什么要等 1.5 秒</h3>
+    <p>面试官说话中间会停顿（换气、想词），语音识别会把停顿当成「一句说完了」。如果每识别到一句就作答，会出现「话说一半就出答案，说完又出一个新答案」。</p>
+    <p>所以软件会等：<b>识别到提问后，再安静 1.5 秒才作答</b>；期间又来新内容就合并成同一个问题。这 1.5 秒是故意等的，不是卡。</p>
+    <ul>
+      <li>觉得太慢：设置 → 作答 → 静默窗口，可调到 1.0–1.2 秒（再低会重新出现「话说一半就答」）。</li>
+      <li>觉得太急：调到 2.0 秒。</li>
+    </ul>
+
+    <h3>「嗯」「对」「OK」不会触发答案</h3>
+    <p>纯语气词、以及剥掉语气词后不足 4 个字且不像提问的碎片，会被直接忽略，状态行显示「听到填充词，已跳过」。「请继续」「接着说」这类明确指令会正常作答。</p>
+
+    <h3>旧答案不会被刷掉</h3>
+    <p>浮层按轮追加：每一轮是「面试官 · 问题 + 答案」，历史问答保留在上面。内容太长时只裁掉最早的轮次。</p>
+
+    <h3>识别错了怎么办（两层纠正 + 一个人工通道）</h3>
+    <ol>
+      <li><b>自动纠错（默认开）</b>：识别出的技术名词会按你的术语表校正，比如把「信客连 map」改成「sync.Map」。它藏在 1.5 秒等待里，不额外增加延迟。</li>
+      <li><b>我的术语（最有效）</b>：托盘 → 我的资料 → 我的术语。一行一个词，尤其是英文专有名词（<code>vLLM</code>、<code>KV cache</code>、<code>PolarDB-X</code>）。写进去的词会被优先纠正，改完不用重启。</li>
+      <li><b>人工纠错</b>：错得离谱时——按 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd>，把问题重说一遍（12 秒内有效，只取下一句）；或按 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd> 直接把正确问题打进去。重答是追加新一轮，看最下面那轮就行。</li>
+    </ol>
+    <div class="warn"><b>识别准确率的边界：</b>本地识别对「中文口音念英文缩写」天生不擅长（GMP、vLLM、KV cache 这类）。写进「我的术语」是目前最有效的办法；云端识别更准但音频会上传，且按小时计费。</div>
+
+    <h3>计费规则（只在这一节讲清楚）</h3>
+    <ul>
+      <li><b>点「开始面试」才开始计时</b>，之前调试设备、试麦克风都不计费。</li>
+      <li>开始时先预扣 5 分钟作为押金，<b>停止时按实际分钟结算，多退少补</b>（不足 1 分钟按 1 分钟）。</li>
+      <li><b>没有暂停</b>：停止=本场结束；再开是新的一场。</li>
+      <li>软件崩溃/被强杀：下次启动会按心跳时间自动结算，不会白扣押金。</li>
+      <li>使用时段卡时，有效期内开场<b>不扣分钟</b>（单日上限 8 小时，超出后回落按分钟计费）。</li>
+    </ul>
+
+    <h3>答案怎么看、怎么用</h3>
+    <ul>
+      <li>答案是<b>口语稿</b>，不是书面报告：直接照着说，别念成朗读稿。</li>
+      <li>每轮自动落盘：托盘 → 网页版记录…，浏览器打开后可以按日期翻历史、搜索关键词、看被过滤的寒暄与设备调试。</li>
+      <li>浮层可点击穿透（<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>T</kbd>），也能从录屏里排除。</li>
+    </ul>
+  </section>
+
+  <!-- ============================================================ 4 -->
+  <section id="written">
+    <h2><span class="num">4</span>笔试截图</h2>
+
+    <h3>两种截法</h3>
+    <table>
+      <tr><th>热键</th><th>截什么</th><th>什么时候用</th></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd></td><td>整块屏幕</td><td>题目在页面中间，或有多道题一次看完</td></tr>
+      <tr><td><kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd></td><td>你框选的一块</td><td>小字、代码块、只有一道题 —— <b>推荐</b>，字更大更准</td></tr>
+    </table>
+    <div class="note"><b>字小看不清就框选：</b>模型是按像素读字的，截图里字太小会读错。先框选题干那一块，比整屏效果好很多。</div>
+
+    <h3>输出长什么样</h3>
+    <ul>
+      <li><b>代码题</b>：先给 3–5 条思路要点，再给完整可运行代码，最后一行是结论。</li>
+      <li><b>选择题</b>：先用 2–4 句说判断依据（为什么选它、排掉了哪些），再给最终选项，最后一行是「答案：X」。</li>
+    </ul>
+
+    <h3>用哪个模型</h3>
+    <p>托盘 → 设置 → 作答 → 通道 / 模型档位。默认内置通道已经是「单次看图直接解」；想更稳可以切 DeepSeek 的 reasoner 档（先抄题再解，慢几秒但复杂题更准）。</p>
+
+    <h3>常见情况</h3>
+    <ul>
+      <li><b>截图后没反应</b>：热键被别的软件占了。到设置里换一个热键，或从托盘菜单点「笔试截图解题」。</li>
+      <li><b>答案只给结论没有过程</b>：确认选的是「代码题 / 选择题」判断正确的题型；实在判断错，直接在截图里把题干框全一点。</li>
+      <li><b>多显示器</b>：全屏截图只截主屏，副屏请用区域截屏。</li>
+    </ul>
+  </section>
+
+  <!-- ============================================================ 5 -->
+  <section id="account">
+    <h2><span class="num">5</span>账户与时长</h2>
+
+    <h3>先分清两个「余额」</h3>
+    <table>
+      <tr><th></th><th>软件时长（你买的东西）</th><th>模型额度（模型厂商的）</th></tr>
+      <tr><td>单位</td><td><b>分钟 / 天</b></td><td>token（折算成钱）</td></tr>
+      <tr><td>在哪</td><td>本机 <code>billing.db</code></td><td>DeepSeek / 智谱等账户</td></tr>
+      <tr><td>谁付</td><td>你付给作者</td><td>内置通道=作者付；自备 Key=你付</td></tr>
+    </table>
+    <div class="ok"><b>首次启动送 20 分钟试用</b>，足够完整试一场短面试。试用只发一次。</div>
+
+    <h3>两种商品</h3>
+    <table>
+      <tr><th>商品</th><th>怎么算</th><th>适合</th></tr>
+      <tr><td><b>分钟包</b></td><td>用一分钟扣一分钟，永久有效，不用不消耗</td><td>偶尔面、想按量用</td></tr>
+      <tr><td><b>时段卡（7 天 / 30 天）</b></td><td>有效期内开面试不扣分钟，单日上限 8 小时</td><td>集中面试期，一天面好几场</td></tr>
+    </table>
+    <p>时段卡续费是<b>叠加</b>：还剩 3 天再买 7 天，得到 10 天。以「开始面试」那一刻的状态结算：开场时有卡就整场免扣，中途到期也照样算完。</p>
+
+    <h3>兑换时长</h3>
+    <ol>
+      <li>托盘 → 设置… → 账户。</li>
+      <li>把兑换码粘进「兑换码」框，点兑换（回车也行）。</li>
+      <li>余额立刻刷新，不需要保存、不需要重启。</li>
+    </ol>
+    <p>兑换码格式长这样：<code>240-01-00000-XXXXXXXX</code>（分钟包）、<code>W07-01-00000-XXXXXXXX</code>（7 天卡）、<code>M30-01-00000-XXXXXXXX</code>（30 天卡）。<b>一个码只能兑一次</b>，兑过会提示「已使用」。</p>
+
+    <h3>购买方式</h3>
+    <p>当前套餐与价格见 <a href="index.html#price">首页定价</a>。购买流程：发邮件到 <a href="mailto:1755482042@qq.com">1755482042@qq.com</a>（标题写「购买」）→ 收到收款码 → 转账 → 收到兑换码 → 在软件里兑换。</p>
+
+    <h3>余额相关的硬规则</h3>
+    <ul>
+      <li>余额与时段卡<b>存在本机</b>，换电脑/重装系统不会自动带走，需要联系作者补发。</li>
+      <li><b>不要删</b> <code>billing.db</code> / <code>billing.bak</code> 之类的文件，也不要手动改数字：软件启动时会校验，发现被删或被改会拒绝启动。</li>
+      <li>正常停止会结算；崩溃也由下次启动补算，不会白扣。</li>
+    </ul>
+  </section>
+
+  <!-- ============================================================ 6 -->
+  <section id="faq">
+    <h2><span class="num">6</span>常见问题</h2>
+
+    <h3>会被面试公司发现吗？</h3>
+    <p>软件把浮层从屏幕录制和截屏里排除了，任务栏也能隐藏。但这不等于「绝对检测不到」：<b>你的作答内容、语速、停顿才是主要破绽</b>。是否允许使用 AI 辅助，取决于招聘方的规则，风险由使用者自负；作者不承诺任何「防检测」效果。</p>
+
+    <h3>需要联网吗？</h3>
+    <p>语音识别在本地跑，<b>没网也能出字幕</b>；但生成答案要联网（要走你选的模型通道）。完全断网时只能用「打字提问 + 本地模型」这类自建方案。</p>
+
+    <h3>用的什么模型？</h3>
+    <p>内置通道默认 DeepSeek V4.1 Flash（快速档、关闭思考）。可以切智谱免费档，或填自己的 Key / 自定义 OpenAI 兼容服务。</p>
+
+    <h3>支持 Mac / 手机吗？</h3>
+    <p>客户端是 Windows 10/11。手机可以用两件事：<b>当麦克风</b>（手机浏览器开提示的地址录音，答案仍显示在电脑），以及<b>看记录</b>（电脑上打开网页版记录后，手机连同一个 Wi-Fi 访问局域网地址）。手机端暂时没有独立的作答 App。</p>
+
+    <h3>一个兑换码能用几台电脑？</h3>
+    <p>一个码只能兑换一次。换电脑要重新买/联系补发。</p>
+
+    <h3>为什么第一句话出得慢？</h3>
+    <p>正常链路是：识别到完整问题 → 等 1.5 秒确认说完了 → 模型开始出字（首字约 0.6–0.9 秒）。所以从面试官说完到看见第一个字，大约 2 秒多。中途如果他又补充了一句，会重新计时。</p>
+
+    <h3>为什么答案有时候答非所问？</h3>
+    <p>九成是识别错了关键词（把「GMP」听成「简品」这种）。按第 3 节的顺序处理：先把词写进「我的术语」，再用 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd> 复述或 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd> 打字。</p>
+
+    <h3>可以截图/录屏吗？</h3>
+    <p>可以。浮层默认不出现在录屏与截屏里；如果对方要求共享整个屏幕，先按 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>T</kbd> 或从托盘隐藏浮层。</p>
+
+    <h3>退款怎么算？</h3>
+    <p>未开始使用的时长包 7 天内可全额退；已使用的按剩余部分协商。时段卡一经开通不退。具体以购买时的说明为准，直接邮件联系。</p>
+
+    <h3>能同时开两场面试吗？</h3>
+    <p>不能。同一台电脑只允许一个实例运行，重复打开会提示「已在运行」。</p>
+  </section>
+
+  <!-- ============================================================ 7 -->
+  <section id="trouble">
+    <h2><span class="num">7</span>故障排查</h2>
+    <p>按「症状 → 先看哪 → 怎么修」查。修不了就带上日志发到支持群/邮箱。</p>
+
+    <table>
+      <tr><th>症状</th><th>先确认</th><th>处理</th></tr>
+      <tr>
+        <td><b>按了开始，浮层不出字</b></td>
+        <td>状态行写的是「正在监听 设备名」吗？</td>
+        <td>① 确认会议软件有声音输出（放首歌试试）；② 设置 → 采集，换「两路分离」→ 重启；③ 蓝牙耳机切换输出设备后，需要重新开始一场。</td>
+      </tr>
+      <tr>
+        <td><b>出字了但一直没答案</b></td>
+        <td>状态行是否提示「余额不足」</td>
+        <td>余额不足 → 设置 → 账户兑换；若提示「未配置 Key」→ 设置 → 作答 选回「内置」。</td>
+      </tr>
+      <tr>
+        <td><b>答案答非所问</b></td>
+        <td>浮层上那句问题是不是就错了</td>
+        <td>是识别错 → 术语表 + 纠错热键（见 3.5）。问题本身对但答案跑偏 → 检查「我的资料 → 简历/经历要点」是否写了无关内容。</td>
+      </tr>
+      <tr>
+        <td><b>提示「语音识别已切换离线桩」</b></td>
+        <td>模型是否下载完</td>
+        <td>向导第 2 步重新下载模型；下载完重启软件。</td>
+      </tr>
+      <tr>
+        <td><b>提示限流 / 请求失败</b></td>
+        <td>是否用了免费档</td>
+        <td>免费档高峰期会 429：等 30 秒重试，或在设置里切到内置/自己的 Key。</td>
+      </tr>
+      <tr>
+        <td><b>软件打不开 / 一闪就退</b></td>
+        <td><code>logs\crash-*.log</code> 最后 20 行</td>
+        <td>最常见是杀软拦截或模型目录被删。加白名单、重下模型；仍不行把日志发过来。</td>
+      </tr>
+      <tr>
+        <td><b>提示「软件无法继续使用」</b></td>
+        <td>是否手动删过 <code>billing.db</code> 或改过余额</td>
+        <td>这是完整性校验。联系作者核对记录后恢复，不要自己再改文件。</td>
+      </tr>
+      <tr>
+        <td><b>网页版记录打不开</b></td>
+        <td>安装目录是否有 <code>jre\</code> 与 <code>webserver\*.jar</code></td>
+        <td>是精简安装包的情况请联系作者；端口 8766 被占用时先关掉占用程序再点一次。</td>
+      </tr>
+    </table>
+
+    <div class="note"><b>发问题前顺手做三件事</b>，能省一个来回：① 截图浮层 + 状态行；② 附 <code>logs\app-*.log</code> 最后 50 行；③ 说明「哪个模式（两路分离/仅系统声音/手机）/ 哪个通道（内置/免费/自备 Key）」。</div>
+  </section>
+
+  <!-- ============================================================ 8 -->
+  <section id="privacy">
+    <h2><span class="num">8</span>隐私与使用边界</h2>
+
+    <h3>音频去哪了</h3>
+    <p><b>语音识别在本机完成，音频不上传</b>（默认本地模型）。开启录音留档时，wav 只写在本机 <code>logs\audio\</code>，默认关闭。</p>
+
+    <h3>文字去哪了</h3>
+    <p>生成答案时，会把「简历 + 经历要点 + 你的术语 + 最近几轮对话 + 当前问题」作为文本发给模型服务：</p>
+    <ul>
+      <li><b>内置通道</b>：走作者提供的 Key，文本会经过作者的模型账户（作者能看到调用量，不保存你的简历原文）。介意就切自己的 Key。</li>
+      <li><b>自备 Key / 自定义</b>：直接发给你配置的厂商，作者这一侧看不到。</li>
+    </ul>
+
+    <h3>记录存在哪、怎么删</h3>
+    <ul>
+      <li>面试记录：安装目录 <code>logs\interview\sessions\</code>（JSON + Markdown）。</li>
+      <li>日志：<code>logs\app-*.log</code>；崩溃日志 <code>logs\crash-*.log</code>。</li>
+      <li>想清空：直接删这些文件即可，不影响软件运行（余额在 <code>billing.db</code>，别删）。</li>
+    </ul>
+
+    <h3>使用边界</h3>
+    <p>本软件用于面试练习、复盘与笔试解题辅助。<b>是否允许在真实面试中使用 AI 辅助，由招聘方规则决定</b>，请自行判断并承担相应风险。作者不对因使用本软件导致的任何招聘结果、账号处罚或纠纷负责。</p>
+  </section>
+
+  <!-- ============================================================ 9 -->
+  <section id="support">
+    <h2><span class="num">9</span>支持与反馈</h2>
+
+    <!-- ==================================================================
+         微信群：建群后改这一块就够了。
+         方式 A（推荐）：把群二维码存成 site/img/wechat-group.png，
+                        然后把下面 <div class="wx-qr">…</div> 换成
+                        <img src="img/wechat-group.png" alt="微信群二维码" style="width:132px;height:132px;border-radius:12px">
+         方式 B：不贴二维码，只改下面的「群号：待填写」。
+         改完记得同步到 E:\qianmian-site\docs.html 并推送到 GitHub Pages。
+         ================================================================== -->
+    <div class="wx">
+      <div class="wx-qr">群二维码<br>（待放）<br><span style="font-size:11px">site/img/wechat-group.png</span></div>
+      <div class="wx-main">
+        <h3>用户群</h3>
+        <p>版本更新、使用技巧、问题答疑都发在群里。下载/安装/退款也可以直接在群里问。</p>
+        <p class="wx-id">微信群号：<b>待填写</b></p>
+        <p class="wx-id">邮件：<a href="mailto:1755482042@qq.com">1755482042@qq.com</a>（购买 / 补发时长 / 商务）</p>
+      </div>
+    </div>
+
+    <h3>提问模板（复制粘贴即可）</h3>
+    <pre><code>版本：设置 → 关于（或安装目录里的版本号）
+场景：两路分离 / 仅系统声音 / 手机当麦克风
+通道：内置 / 智谱免费 / 自备 Key
+现象：点了开始之后，浮层显示……
+已试过：重启软件 / 换采集模式 / 重新下载模型
+日志：logs\app-20261108.log 最后 50 行（附件）</code></pre>
+
+    <h3>功能建议</h3>
+    <p>直接说「我在什么场景下想做什么」，比说「加个功能」有用得多。被采纳的建议会在群里公示并送时长。</p>
+  </section>
+
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-links">
+      <a href="index.html">首页</a>
+      <a href="index.html#price">定价</a>
+      <a href="#support">支持</a>
+      <a href="mailto:1755482042@qq.com">邮件</a>
+    </div>
+    <div>© 2026 千面 AI · 文档最后更新：2026-11-08</div>
+  </div>
+</footer>
+
+</body>
+</html>
