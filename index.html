@@ -60,7 +60,8 @@
   }
   .btn:hover{transform:translateY(-1px);box-shadow:0 12px 30px rgba(91,140,255,.36)}
   .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text);box-shadow:none;font-weight:400}
-  .meta-sm{font-size:13px;color:var(--dim)}
+  .meta-sm{font-size:13px;color:var(--dim);line-height:1.7}
+  .mirror{color:var(--muted);border-bottom:1px solid var(--line)}
   @media(max-width:720px){h1{font-size:32px}}
 
   /* ---------- 浮层示意 ---------- */
@@ -148,10 +149,14 @@
 
     <div class="cta-row">
       <!-- TODO: 换成你的 GitHub 仓库地址（releases/latest/download 会自动指向最新一版） -->
-      <a class="btn" href="https://github.com/qianmian-ai/qianmian-ai.github.io/releases/latest/download/QianmianAI-Setup-0.1.0.exe">
+      <a class="btn" href="https://ghfast.top/https://github.com/qianmian-ai/qianmian-ai.github.io/releases/download/v0.1.0/QianmianAI-Setup-0.1.0.exe">
         ↓ 下载 Windows 版
       </a>
-      <span class="meta-sm">v0.1.0 · 321 MB · 含语音模型，装完即用</span>
+      <span class="meta-sm">
+        v0.1.0 · 321 MB · 含语音模型，装完即用<br>
+        国内加速镜像，如无法下载可用
+        <a class="mirror" href="https://github.com/qianmian-ai/qianmian-ai.github.io/releases/download/v0.1.0/QianmianAI-Setup-0.1.0.exe">官方直链</a>
+      </span>
     </div>
 
     <div class="mock">
