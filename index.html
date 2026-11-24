@@ -149,7 +149,7 @@
     </p>
 
     <div class="cta-row">
-      <!-- TODO: 换成你的 GitHub 仓库地址（releases/latest/download 会自动指向最新一版） -->
+
       <a class="btn" href="https://ghfast.top/https://github.com/qianmian-ai/qianmian-ai.github.io/releases/download/v0.2.0/QianmianAI-Setup-0.2.0.exe">
         ↓ 下载 Windows 版
       </a>
@@ -179,6 +179,23 @@
       </div>
       <div class="mock-status">已答 2 问 · 首字 0.68s · 缓存命中 97%</div>
     </div>
+
+    <div class="mock" style="margin-top:18px">
+      <div class="mock-bar">
+        <span class="d"></span><span class="d"></span><span class="d"></span>
+        <span class="title">产品岗示例 · 行为面</span>
+      </div>
+      <div class="mock-body">
+        <div class="q"><b>面试官</b> · 讲一个你做过、但最后没上线的东西。</div>
+        <div class="a">
+          我做过一个自动生成周报的小工具。当时的判断是 <span class="hl">需求真实、但优先级不够</span>：
+          周报一周才一次，痛感低；真正卡住团队的是跨部门对齐。我把工具做到能跑，但主动停在上线前，
+          把时间换到对齐流程上——结果周会时长从 90 分钟压到 40 分钟。
+          这件事我学到的是 <span class="hl">先判断痛点频率，再决定做不做</span>。
+        </div>
+      </div>
+      <div class="mock-status">答案来自你自己的经历要点，不是模型编的</div>
+    </div>
   </div>
 </header>
 
@@ -203,6 +220,21 @@
         <h3>复盘记录</h3>
         <p>每轮问答自动落盘。网页端按日期回看、关键词搜索，设备调试和语气词自动折叠，只看有效问答。</p>
       </div>
+      <div class="card">
+        <div class="num">04</div>
+        <h3>我的资料</h3>
+        <p>简历、经历要点、目标公司、岗位描述、我的术语，都在一个窗口里改，不用去翻文件；改完立刻生效。</p>
+      </div>
+      <div class="card">
+        <div class="num">05</div>
+        <h3>网页版回看</h3>
+        <p>托盘一键拉起本地网页端，按日期回看面试记录、关键词搜索。自带运行环境，你的电脑不用装 Java。</p>
+      </div>
+      <div class="card">
+        <div class="num">06</div>
+        <h3>出问题能查</h3>
+        <p>托盘「导出诊断包」一键生成脱敏压缩包（日志 + 配置，Key 自动打码），发给我就能定位问题。</p>
+      </div>
     </div>
   </div>
 </section>
@@ -223,6 +255,56 @@
       <div class="row">
         <span class="ico">✓</span>
         <div><b>只讲你简历里写过的事。</b><span> 答案锚定在你自己的经历要点上，不会给你编一个"我在阿里做过"的项目——那种一追问就露馅。</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="scope">
+  <div class="wrap">
+    <div class="kicker">适用场景</div>
+    <h2>先说清楚哪些能用、哪些不能</h2>
+    <div class="list">
+      <div class="row">
+        <span class="ico">✓</span>
+        <div><b>任何岗位的行为面 / 经历面。</b><span> 自我介绍、项目经历、冲突处理、离职原因、反问环节——答案来自你自己写的经历要点，不编故事，所以跨岗位通用。</span></div>
+      </div>
+      <div class="row">
+        <span class="ico">✓</span>
+        <div><b>技术岗的专业深挖。</b><span> 原理、区别、底层实现、代码题。内置术语纠错，被识别成「简品」「信客连」的词会还原成 GMP、sync.Map，不照着错词答偏。</span></div>
+      </div>
+      <div class="row">
+        <span class="ico">!</span>
+        <div><b>产品、运营、财务等岗位的专业题。</b><span> 暂未做专项适配：行为面照常可用，专业题只能靠通用知识答，一被追问容易虚。效果取决于你提供的材料有多细。</span></div>
+      </div>
+      <div class="row">
+        <span class="ico">×</span>
+        <div><b>不支持：</b><span> 群面 / 无领导小组（多人同时说话分不清谁在问）、教师试讲、需要实时看你画图或共享屏幕写代码的场景。</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="start">
+  <div class="wrap">
+    <div class="kicker">第一次用</div>
+    <h2>四步开始，五分钟内能答第一题</h2>
+    <div class="list">
+      <div class="row">
+        <span class="ico">1</span>
+        <div><b>下载安装。</b><span> 运行安装包，装到当前用户目录，全程不弹管理员权限。</span></div>
+      </div>
+      <div class="row">
+        <span class="ico">2</span>
+        <div><b>首次运行向导。</b><span> 四步：粘简历、下载语音模型、选作答通道（内置通道免填 Key）、选声音从哪来。可随时跳过。</span></div>
+      </div>
+      <div class="row">
+        <span class="ico">3</span>
+        <div><b>送 20 分钟试用。</b><span> 装好即送，不用注册、不用付款。调试设备不计入时长。</span></div>
+      </div>
+      <div class="row">
+        <span class="ico">4</span>
+        <div><b>按需兑换时长。</b><span> 托盘 → 设置 → 账户 → 兑换码，输入兑换码立即到账，不用重启。</span></div>
       </div>
     </div>
   </div>
@@ -274,11 +356,11 @@
       </details>
       <details>
         <summary>需要自己准备 API Key 吗？</summary>
-        <p>需要。模型调用走你自己的账号（DeepSeek 等），费用由你自己的账单结算。这是刻意的设计——你的面试内容不经过我们的服务器。</p>
+        <p>不需要。安装包自带内置通道，装完直接能用，模型费用已含在时长里；也可以在设置里换成自己的 Key（智谱免费档、DeepSeek、百炼或任意 OpenAI 兼容服务），换成自己的 Key 后不再扣模型费。</p>
       </details>
       <details>
         <summary>装完有多大？</summary>
-        <p>安装后约 470 MB，其中 237 MB 是本地语音识别模型。模型随安装包一起装好，不需要首次运行再下载 200 多 MB。</p>
+        <p>安装包 112 MB，装完约 250 MB。首次运行会自动下载约 226 MB 的本地语音模型（约 20 秒，只下一次），之后总共约 480 MB。跳过下载也能用，语音识别会改用云端（需自备百炼 Key）或离线桩。</p>
       </details>
       <details>
         <summary>支持 Mac 吗？</summary>

@@ -1,0 +1,98 @@
+<!--
+  下载说明片段（可嵌入 index.html / docs.html）
+  用法：把整个 <section> 复制到目标页面需要的位置即可；片段自带作用域样式，
+  不会影响页面其余部分。截图位用虚线框占位，换真图时把 .dn-shot 换成
+  <img src="img/xxx.png" alt="..." style="width:100%;border-radius:10px"> 即可。
+-->
+<section class="dl-note" id="download-note">
+  <style>
+    .dl-note{
+      --dn-bg:#0e1014; --dn-panel:#151922; --dn-panel-2:#1b2029; --dn-line:#262c38;
+      --dn-text:#e8ecf3; --dn-muted:#98a2b3; --dn-dim:#6b7688;
+      --dn-primary:#5b8cff; --dn-primary-dim:rgba(91,140,255,.14);
+      --dn-warn:#e8b45a; --dn-ok:#3ecf8e;
+      display:block;background:var(--dn-bg);color:var(--dn-text);line-height:1.9;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
+      padding:76px 0;
+    }
+    .dl-note *{box-sizing:border-box}
+    .dl-note .dn-wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+    .dl-note .dn-kicker{color:var(--dn-primary);font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+    .dl-note h2{font-size:30px;line-height:1.4;font-weight:700;letter-spacing:-.3px;margin:0}
+    .dl-note .dn-lead{color:var(--dn-muted);margin-top:14px;max-width:680px}
+    .dl-note .dn-steps{display:grid;gap:18px;margin-top:36px}
+    .dl-note .dn-step{background:var(--dn-panel);border:1px solid var(--dn-line);border-radius:12px;padding:26px}
+    .dl-note .dn-step-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+    .dl-note .dn-badge{
+      flex:0 0 auto;width:28px;height:28px;border-radius:50%;
+      background:var(--dn-primary-dim);border:1px solid rgba(91,140,255,.35);
+      color:var(--dn-primary);font-size:14px;font-weight:700;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .dl-note .dn-step-head h3{font-size:17px;font-weight:600;margin:0}
+    .dl-note p{color:var(--dn-muted);font-size:14.5px;margin:10px 0}
+    .dl-note p b{color:var(--dn-text);font-weight:600}
+    .dl-note ol,.dl-note ul{margin:10px 0 10px 22px;color:var(--dn-muted);font-size:14.5px}
+    .dl-note li{margin:6px 0}
+    .dl-note code{background:#11151c;border:1px solid var(--dn-line);border-radius:4px;padding:1px 6px;font-size:13px;color:#c9d4e6;
+      font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}
+    .dl-note kbd{display:inline-block;background:var(--dn-panel-2);border:1px solid var(--dn-line);border-bottom-width:2px;
+      border-radius:6px;padding:1px 7px;font-size:12.5px;color:var(--dn-text);
+      font-family:ui-monospace,Consolas,monospace}
+    /* 截图位：卖家换成真图即可 */
+    .dl-note .dn-shot{
+      display:block;margin:16px 0 4px;border:1px dashed #3a4252;border-radius:10px;
+      padding:30px 16px;text-align:center;color:var(--dn-dim);font-size:13px;
+      background:repeating-linear-gradient(45deg,#12161d,#12161d 10px,#141922 10px,#141922 20px);
+    }
+    .dl-note .dn-note,.dl-note .dn-warn{
+      border-radius:10px;padding:13px 16px;margin:16px 0;font-size:14px;color:var(--dn-muted);
+      border:1px solid var(--dn-line);background:var(--dn-panel);
+    }
+    .dl-note .dn-note{border-left:3px solid var(--dn-primary)}
+    .dl-note .dn-warn{border-left:3px solid var(--dn-warn)}
+    .dl-note .dn-note b,.dl-note .dn-warn b{color:var(--dn-text)}
+  </style>
+
+  <div class="dn-wrap">
+    <div class="dn-kicker">下载与安装</div>
+    <h2>两个拦截提示，都不影响正常使用</h2>
+    <p class="dn-lead">
+      本软件尚未购买数字签名证书，也没有做任何隐藏或加壳处理，因此 Windows 的 SmartScreen 与部分杀毒软件
+      可能给出提示。按下面两步操作即可正常安装运行。
+    </p>
+
+    <div class="dn-steps">
+
+      <div class="dn-step">
+        <div class="dn-step-head">
+          <span class="dn-badge">1</span>
+          <h3>「Windows 已保护你的电脑」怎么继续</h3>
+        </div>
+        <p>双击安装包后，若弹出蓝色的「Windows 已保护你的电脑」窗口，这是 Windows 对未签名程序的默认拦截，<b>不是病毒</b>。按以下顺序操作：</p>
+        <ol>
+          <li>点击窗口中的 <b>「更多信息」</b>（More info）链接，展开被折叠的按钮；</li>
+          <li>点击右下角的 <b>「仍要运行」</b>（Run anyway）；</li>
+          <li>安装向导继续，按提示完成安装即可。</li>
+        </ol>
+        <span class="dn-shot">截图位：SmartScreen 窗口 →「更多信息」→「仍要运行」</span>
+        <div class="dn-note"><b>为什么会出现：</b>代码签名证书需要每年付费，现阶段尚未购买，所以每个新版本首次运行时都会出现这个提示，属于正常现象。</div>
+      </div>
+
+      <div class="dn-step">
+        <div class="dn-step-head">
+          <span class="dn-badge">2</span>
+          <h3>杀毒软件误报时怎么加信任</h3>
+        </div>
+        <p>本软件会读取<b>系统正在播放的声音</b>（用于实时语音识别），这类行为与录音软件相似，容易被启发式引擎误判为风险。若被拦截，请把安装目录加入杀毒软件的信任 / 排除列表，再重新运行。</p>
+        <ul>
+          <li><b>Windows Defender：</b>「Windows 安全中心 → 病毒和威胁防护 → 管理设置 → 排除项 → 添加排除项 → 文件夹」，选中安装目录。</li>
+          <li><b>第三方杀软（火绒 / 360 等）：</b>在「信任区 / 白名单 / 排除目录」里添加安装目录。</li>
+        </ul>
+        <span class="dn-shot">截图位：杀毒软件「添加信任目录 / 排除项」界面</span>
+        <div class="dn-warn"><b>提示：</b>把整个安装目录加进信任区即可，无需关闭杀毒软件。安装目录通常是 <code>%LOCALAPPDATA%\Programs\QianmianAI</code>；若不确定位置，可在开始菜单右键本软件图标 →「打开文件所在的位置」查看。</div>
+      </div>
+
+    </div>
+  </div>
+</section>
